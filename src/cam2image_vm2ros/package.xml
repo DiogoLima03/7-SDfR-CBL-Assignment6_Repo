@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>cam2image_vm2ros</name>
+  <version>0.21.0</version>
+  <description>Tools to capture and play back images to and from DDS subscriptions and publications.</description>
+
+  <!-- Current Utwente Maintainer -->
+  <maintainer email="l.b.l.lenders@utwente.nl"></maintainer>
+
+  <license>BSD</license>
+
+  <!-- Original image_tools -->
+  <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
+  <author email="mabel@openrobotics.org">Mabel Zhang</author>
+
+  <!-- Adaptations -->
+  <author email="j.h.j.pott@student.utwente.nl">Jurrijn Pott</author>
+  <author email="cbuschman@movigorobotics.com">Camille Buschman</author>
+  <author email="t.i.bink@student.utwente.nl">Thijs Bink</author>
+  <author email="j.j.hierck@student.utwente.nl">Jelle Hierck</author>
+  <author email="j.f.broenink@utwente.nl">Jan Broenink</author>
+  <author email="l.b.l.lenders@utwente.nl"></author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>libopencv-dev</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>rclcpp_components</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <exec_depend>libopencv-dev</exec_depend>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclcpp_components</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

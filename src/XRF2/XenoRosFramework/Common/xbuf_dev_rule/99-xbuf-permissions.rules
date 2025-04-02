@@ -1,0 +1,2 @@
+# Set permissions for files in /dev/evl/xbuf to 666
+ACTION=="add", SUBSYSTEM=="xbuf", DEVPATH=="/devices/virtual/xbuf/*", RUN+="/bin/chmod 666 /dev/evl/xbuf/%k"
