@@ -15,6 +15,6 @@ ALL IN ONE:
 `ros2 launch launch_relbot image_to_pose_launch.py   `
 
 ALL IN ONE:
-`colcon build --packages-skip ros_xeno_bridge && source install/setup.bash && ros2 launch launch image_to_pose_launch.py   `
+`colcon build --packages-skip ros_xeno_bridge && source install/setup.bash && ros2 launch launch_relbot image_to_pose_launch.py   `
 ----------------------------------------------------------------------------------------------------------------------------------------
 
