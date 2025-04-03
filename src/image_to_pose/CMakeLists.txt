@@ -9,6 +9,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(OpenCV REQUIRED)
+find_package(cv_bridge REQUIRED)
 
 # include header
 include_directories(include)
@@ -20,7 +22,11 @@ add_executable(image_to_pose src/image_to_pose.cpp)
 ament_target_dependencies(image_to_pose
   rclcpp
   sensor_msgs
+  cv_bridge
 )
+
+# link OpenCV library to executable
+target_link_libraries(image_to_pose ${OpenCV_LIBRARIES})
 
 # Install the executable
 install(TARGETS
