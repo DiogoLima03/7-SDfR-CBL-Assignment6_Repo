@@ -5,18 +5,28 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# Dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-add_executable(image_to_pose src/image_to_pose.cpp)
-ament_target_dependencies(image_to_pose rclcpp sensor_msgs)
+# include header
+include_directories(include)
 
+# Executable
+add_executable(image_to_pose src/image_to_pose.cpp)
+
+# Executable dependencies
+ament_target_dependencies(image_to_pose
+  rclcpp
+  sensor_msgs
+)
+
+# Install the executable
 install(TARGETS
   image_to_pose
-  DESTINATION lib/${PROJECT_NAME})
-
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
