@@ -6,6 +6,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "cv_bridge/cv_bridge.hpp"
+#include "geometry_msgs/msg/pose.hpp"
 
 class ImageToPose : public rclcpp::Node
 {
@@ -18,7 +19,8 @@ private:
 
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
   size_t count_;
-
+  
+  
   // Camera intrinsic parameters (replace with real calibration if needed)
   float fx_ = 525.0;
   float fy_ = 525.0;
@@ -27,4 +29,8 @@ private:
   float real_ball_radius_m_ = 0.05; // 5cm radius
 
   const std::string window_name_ = "Green Ball Detection";
+
+  rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_publisher_;
+  void calculate_pose(cv::Point3f position);
+  
 };

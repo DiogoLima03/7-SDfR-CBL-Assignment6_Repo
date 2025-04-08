@@ -11,6 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 # include header
 include_directories(include)
@@ -23,6 +24,7 @@ ament_target_dependencies(image_to_pose
   rclcpp
   sensor_msgs
   cv_bridge
+  geometry_msgs
 )
 
 # link OpenCV library to executable
