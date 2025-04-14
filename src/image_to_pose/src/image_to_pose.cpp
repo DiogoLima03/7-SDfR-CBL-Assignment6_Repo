@@ -61,11 +61,20 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
   // Checks for the green ball
   if (contours.empty())
   {
+    geometry_msgs::msg::Pose nullPose;  
+
+    nullPose.position.x = 0.0;
+    nullPose.orientation.z = 0.0;
+
+    // Publish the message
+    pose_publisher_->publish(nullPose);
+
     RCLCPP_WARN(this->get_logger(), "No green ball found.");
     cv::imshow(window_name_, cv_ptr->image);
     cv::waitKey(1);
     return;
   }
+
 
   // Find the largest contour
   auto max_contour = std::max_element(contours.begin(), contours.end(),

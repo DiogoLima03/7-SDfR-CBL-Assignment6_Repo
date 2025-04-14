@@ -35,4 +35,4 @@ ALL IN ONE:
 3. `ros2 launch launch_relbot sequence_controller__simulate_launch.py   `
 
 ALL IN ONE:
-1. `colcon build --packages-skip ros_xeno_bridge && source install/setup.bash && ros2 launch launch_relbot sequence_controller__simulate_launch.py              `
+1. `colcon build --packages-skip ros_xeno_bridge costum_messages && source install/setup.bash && ros2 launch launch_relbot sequence_controller__simulate_launch.py              `

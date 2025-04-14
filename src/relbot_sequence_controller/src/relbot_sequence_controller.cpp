@@ -28,7 +28,18 @@ void SteerRelbot::create_topics()
 
 
 void SteerRelbot::pose_callback(geometry_msgs::msg::Pose::SharedPtr pose)
-{
+{   
+    if (pose->position.x == 0.0 && pose->orientation.z == 0.0)
+    {
+        RCLCPP_WARN(this->get_logger(), "No setpoint generated.");
+        
+        example_interfaces::msg::Float64 null_velocity;
+        null_velocity.data = 0;
+        left_wheel_publish_->publish(null_velocity);
+        right_wheel_publish_->publish(null_velocity);
+        return;
+    }
+
     // calculate velocity
     calculate_velocity(std::move(pose));
 
@@ -47,7 +58,7 @@ void SteerRelbot::calculate_velocity(geometry_msgs::msg::Pose::SharedPtr pose)
 
     // Distance
     float xBall = pose->position.x/3;
-    xDesiredDistance = 0.0;
+    xDesiredDistance = 0.300;
 
     // Orientation
     float thetaBall = pose->orientation.z;
