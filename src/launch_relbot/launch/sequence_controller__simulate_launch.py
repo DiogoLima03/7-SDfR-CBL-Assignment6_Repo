@@ -14,6 +14,30 @@ def generate_launch_description():
         'cam2image_launch.py'
     )
     
+    relbot_simulator = Node(
+            package="relbot_simulator",
+            executable="relbot_simulator",
+            name="relbot_simulator"
+        )
+    
+    relbot2turtlesim = Node(
+            package="relbot2turtlesim",
+            executable="relbot2turtlesim",
+            name="relbot2turtlesim"
+        )
+    
+    turtlesim = Node(
+            package="turtlesim",
+            executable="turtlesim_node",
+            name="turtlesim"
+        )
+    
+    relbot_sequence_controller = Node(
+            package="relbot_sequence_controller",
+            executable="relbot_sequence_controller",
+            name="relbot_sequence_controller"
+        )
+    
     cam2image_launch =  IncludeLaunchDescription(
             PythonLaunchDescriptionSource(cam2image_path)
         )
@@ -25,6 +49,10 @@ def generate_launch_description():
         )
     
     return LaunchDescription([
+        relbot_simulator,
+        relbot2turtlesim,
+        turtlesim,
+        relbot_sequence_controller,
         cam2image_launch,
         image_to_pose
     ])

@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(example_interfaces REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 include_directories(include)
 
@@ -18,6 +19,7 @@ src/relbot_sequence_controller.cpp)
 ament_target_dependencies(relbot_sequence_controller
     rclcpp
     example_interfaces
+    geometry_msgs
 )
 
 install(
@@ -40,9 +42,3 @@ endif()
 
 ament_package()
 
-
-# # install the launch directory
-# install(DIRECTORY
-#   launch
-#   DESTINATION share/${PROJECT_NAME}/
-# )
