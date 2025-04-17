@@ -17,7 +17,6 @@ public:
 private:
   void image_callback(sensor_msgs::msg::Image::UniquePtr msg);
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
-  rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_publisher_;
   rclcpp::Publisher<costum_messages::msg::PoseAndStatus>::SharedPtr poseAndStatus_publisher_;
   size_t count_;
 

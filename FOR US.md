@@ -31,7 +31,7 @@ ALL IN ONE:
 4. `source install/setup.bash  `
 5. `ros2 launch launch_relbot sequence_controller_simulation_launch.py   `
 ALL IN ONE:
-1. `colcon build --packages-select costum_messages cam2image_vm2ros image_to_pose relbot_sequence_controller relbot_simulator relbot2turtlesim launch_relbot && source install/setup.bash && ros2 launch launch_relbot sequence_controller_simulation_launch.py              `
+1. `colcon build --packages-select xrf2_msgs costum_messages &&  source install/setup.bash && colcon build --packages-select cam2image_vm2ros image_to_pose relbot_sequence_controller relbot_simulator relbot2turtlesim launch_relbot &&  source install/setup.bash &&  ros2 launch launch_relbot sequence_controller_simulation_launch.py    `
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 Assignment 6.4.1 (Runing nodes (up until the sequence controller with turtlesim) in the relbot without connecting to the motors (Xenomai))

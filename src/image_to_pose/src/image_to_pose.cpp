@@ -40,10 +40,9 @@ ImageToPose::ImageToPose() : Node("image_to_pose"), count_(0)
       "/image", 10,
       std::bind(&ImageToPose::image_callback, this, std::placeholders::_1));
 
-  // Creates a publisher for the "/ball_pose" topic
+  // Creates a publisher for the "/ball_pose_and_status" topic
   // Allows for 10 messages in the queue
-  // The publisher sends messages of type geometry_msgs::msg::Pose
-  pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/ball_pose", 10);
+  // The publisher sends messages of type costum_messages::msg::PoseAndStatus (float32 position, float32 orientation, bool status)
   poseAndStatus_publisher_ = this->create_publisher<costum_messages::msg::PoseAndStatus>("/ball_pose_and_status", 10);
 }
 
@@ -72,14 +71,6 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
     RCLCPP_WARN(this->get_logger(), "Image Processing Error:");
 
     comunicateBallNotFound();
-
-    // send null velocity
-    geometry_msgs::msg::Pose nullPose;
-    nullPose.position.x = 0.0;
-    nullPose.orientation.z = 0.0;
-
-    // Publish the message
-    pose_publisher_->publish(nullPose);
     return; 
   }
 
@@ -93,14 +84,6 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
     RCLCPP_WARN(this->get_logger(), "No valid green ball found.");
     
     comunicateBallNotFound();
-    // to change======================================
-    geometry_msgs::msg::Pose nullPose;
-    nullPose.position.x = 0.0;
-    nullPose.orientation.z = 0.0;
-
-    // Publish the message
-    pose_publisher_->publish(nullPose);
-    // ===============================================
 
     cv::imshow(window_name_, image);
     cv::waitKey(1);
@@ -126,6 +109,7 @@ void ImageToPose::comunicateBallNotFound()
   poseAndStatus.position = 0.0;
   poseAndStatus.orientation = 0.0;
   poseAndStatus.status = false;
+  poseAndStatus_publisher_->publish(poseAndStatus);
 }
 
 
@@ -231,8 +215,7 @@ geometry_msgs::msg::Pose ImageToPose::calculate_pose(cv::Point2f &position2D)
   poseAndStatus.orientation = pose.orientation.z;
   poseAndStatus.status = true;
 
-  // Publishes the Pose message
-  pose_publisher_->publish(pose);
+  // Publishes the Pose and Status as True 
   poseAndStatus_publisher_->publish(poseAndStatus);
 
   return pose;
