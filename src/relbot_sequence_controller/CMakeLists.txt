@@ -11,6 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(xrf2_msgs REQUIRED)
+find_package(costum_messages REQUIRED)
 
 include_directories(include)
 
@@ -22,6 +23,7 @@ ament_target_dependencies(relbot_sequence_controller
     example_interfaces
     geometry_msgs
     xrf2_msgs
+    costum_messages
 )
 
 install(

@@ -1,3 +1,0 @@
-bool ballDetected
-float32 xPosition
-float32 thetaPosition

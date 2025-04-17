@@ -44,6 +44,7 @@ ImageToPose::ImageToPose() : Node("image_to_pose"), count_(0)
   // Allows for 10 messages in the queue
   // The publisher sends messages of type geometry_msgs::msg::Pose
   pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/ball_pose", 10);
+  poseAndStatus_publisher_ = this->create_publisher<costum_messages::msg::PoseAndStatus>("/ball_pose_and_status", 10);
 }
 
 // Input: msg - Image message
@@ -64,10 +65,13 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
 
   // Processes the image
   cv::Mat image;
-  bool checkImageProcessing = imageProcessing(msg, image);
+  cv::Mat mask;
+  bool checkImageProcessing = imageProcessing(msg, image, mask);
   if (!checkImageProcessing){
     // detects an error in the image processing
     RCLCPP_WARN(this->get_logger(), "Image Processing Error:");
+
+    comunicateBallNotFound();
 
     // send null velocity
     geometry_msgs::msg::Pose nullPose;
@@ -82,12 +86,13 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
   cv::Point2f center;
   float radius;
 
-  bool checkBallDetection = detect_ball(image, center, radius);
+  bool checkBallDetection = detect_ball(mask, center, radius);
 
   if (!checkBallDetection)
   {
     RCLCPP_WARN(this->get_logger(), "No valid green ball found.");
     
+    comunicateBallNotFound();
     // to change======================================
     geometry_msgs::msg::Pose nullPose;
     nullPose.position.x = 0.0;
@@ -115,7 +120,16 @@ void ImageToPose::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
   displayDetection(image, center, radius, pose);
 }
 
-bool ImageToPose::imageProcessing(sensor_msgs::msg::Image::UniquePtr &msg, cv::Mat &image)
+void ImageToPose::comunicateBallNotFound()
+{
+  costum_messages::msg::PoseAndStatus poseAndStatus;
+  poseAndStatus.position = 0.0;
+  poseAndStatus.orientation = 0.0;
+  poseAndStatus.status = false;
+}
+
+
+bool ImageToPose::imageProcessing(sensor_msgs::msg::Image::UniquePtr &msg, cv::Mat &image, cv::Mat &mask)
 {
   // Convert from ROS2 image message to OpenCV image
   // Initializes a pointer for the image
@@ -136,16 +150,18 @@ bool ImageToPose::imageProcessing(sensor_msgs::msg::Image::UniquePtr &msg, cv::M
     // Return with a false if the image conversion fails
     return false; 
   }
+  // Save the converted image 
+  image = cv_ptr->image;
 
   // Convert the image to HSV color space
-  cv::Mat hsv, mask;
-  cv::cvtColor(cv_ptr->image, hsv, cv::COLOR_BGR2HSV);
+  cv::Mat new_hsv, new_mask;
+  cv::cvtColor(cv_ptr->image, new_hsv, cv::COLOR_BGR2HSV);
 
   // Create a mask for the green color and saves it in the image input argument
-  cv::inRange(hsv, cv::Scalar(35, 100, 100), cv::Scalar(85, 255, 255), mask);
+  cv::inRange(new_hsv, cv::Scalar(35, 100, 100), cv::Scalar(85, 255, 255), new_mask);
 
-  // Save the processed image in image 
-  image = mask;
+  // Save the new mask 
+  mask = new_mask;
 
   // Confirm that the Image Processing was successful
   return true;
@@ -167,9 +183,6 @@ bool ImageToPose::detect_ball(const cv::Mat &mask, cv::Point2f &center, float &r
   cv::minEnclosingCircle(max_contour, center, radius);
   return radius >= 5.0;
 }
-
-
-
 
 // Input: image_point - 2D point in the image (in pixels)
 //        radius_pixels - radius of the ball (in pixels)
@@ -201,21 +214,26 @@ geometry_msgs::msg::Pose ImageToPose::calculate_pose(cv::Point2f &position2D)
   // Create a new Pose variable
   geometry_msgs::msg::Pose pose;
 
+  costum_messages::msg::PoseAndStatus poseAndStatus;
+
   // Calculate the x "pose" position of the ball
   // The x "pose" position is the distance from the camera to the ball
   // we don't use the y posittion of the ball, we assume that the ball is projected into the xOz plane
   // The x "pose" is in meters
   pose.position.x = sqrt(pow(position2D.x, 2) + pow(position2D.y, 2));
-
+  poseAndStatus.position = pose.position.x;
   // Calculate Theta "pose" orientation of the ball in a 2D plane
   // and store it in the z orientation of the Pose message
   // The theta "pose" orientation is the angle between the front acis of the camera
   // and the line connecting the camera to the ball
   // The angle is in radians
   pose.orientation.z = (M_PI / 2) - atan2(position2D.y, position2D.x);
+  poseAndStatus.orientation = pose.orientation.z;
+  poseAndStatus.status = true;
 
   // Publishes the Pose message
   pose_publisher_->publish(pose);
+  poseAndStatus_publisher_->publish(poseAndStatus);
 
   return pose;
 }

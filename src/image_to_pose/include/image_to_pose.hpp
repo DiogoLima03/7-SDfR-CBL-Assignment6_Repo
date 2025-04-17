@@ -7,6 +7,7 @@
 #include "sensor_msgs/msg/image.hpp"
 #include "cv_bridge/cv_bridge.hpp"
 #include "geometry_msgs/msg/pose.hpp"
+#include "costum_messages/msg/pose_and_status.hpp"
 
 class ImageToPose : public rclcpp::Node
 {
@@ -15,16 +16,18 @@ public:
 
 private:
   void image_callback(sensor_msgs::msg::Image::UniquePtr msg);
-  
-  cv::Point2f estimate_position(const cv::Point2f &image_point, const float &radius_pixels);
-
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
-
+  rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_publisher_;
+  rclcpp::Publisher<costum_messages::msg::PoseAndStatus>::SharedPtr poseAndStatus_publisher_;
   size_t count_;
-  
-  bool imageProcessing(sensor_msgs::msg::Image::UniquePtr &msg, cv::Mat &image);
+
+
+  cv::Point2f estimate_position(const cv::Point2f &image_point, const float &radius_pixels);
+  bool imageProcessing(sensor_msgs::msg::Image::UniquePtr &msg, cv::Mat &image, cv::Mat &mask);
   bool detect_ball(const cv::Mat &mask, cv::Point2f &center, float &radius);
   void displayDetection(cv::Mat &image, const cv::Point2f &center, const float &radius, const geometry_msgs::msg::Pose &pose);
+  geometry_msgs::msg::Pose calculate_pose(cv::Point2f &position2D);
+  void comunicateBallNotFound();
 
 
   // Camera intrinsic parameters from camera matrix
@@ -40,10 +43,4 @@ private:
   // Name of windoe with ball detected
   const std::string window_name_ = "Green Ball Detection";
 
-  //
-  rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_publisher_;
-
-  // Calculates the
-  geometry_msgs::msg::Pose calculate_pose(cv::Point2f &position2D);
-  
 };

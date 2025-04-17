@@ -12,6 +12,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(costum_messages REQUIRED)
 
 # include header
 include_directories(include)
@@ -25,6 +26,7 @@ ament_target_dependencies(image_to_pose
   sensor_msgs
   cv_bridge
   geometry_msgs
+  costum_messages
 )
 
 # link OpenCV library to executable

@@ -14,7 +14,8 @@
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
-  
+   <depend>costum_messages</depend>
+
   <exec_depend>opencv</exec_depend>
   
   <test_depend>ament_lint_auto</test_depend>

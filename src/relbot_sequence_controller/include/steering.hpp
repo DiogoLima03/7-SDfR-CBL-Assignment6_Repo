@@ -18,6 +18,9 @@
 // message type for xeno2ros
 #include "xrf2_msgs/msg/xeno2_ros.hpp"
 
+// costum message for pose and status of the detected ball
+#include "costum_messages/msg/pose_and_status.hpp"
+
 class SteerRelbot : public rclcpp::Node
 {
 public:
@@ -26,7 +29,8 @@ public:
 private:
     // Subscribers
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_subscription_;
-
+    rclcpp::Subscription<costum_messages::msg::PoseAndStatus>::SharedPtr poseAndStatus_subscription_;
+    
     // Publisher for the relbot
     rclcpp::Publisher<xrf2_msgs::msg::Ros2Xeno>::SharedPtr velocities_relbot_;
 
@@ -48,6 +52,8 @@ private:
     void create_topics();
     void pose_callback(geometry_msgs::msg::Pose::SharedPtr pose);
     void calculate_velocity(geometry_msgs::msg::Pose::SharedPtr pose);
+    void pose_callback2(costum_messages::msg::PoseAndStatus::SharedPtr poseAndStatus);
+    void calculate_velocity2(costum_messages::msg::PoseAndStatus &poseAndStatus);
 };
 
 #endif /*STEER_RELBOT_HPP_*/
