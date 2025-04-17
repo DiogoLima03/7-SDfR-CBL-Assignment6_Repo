@@ -50,7 +50,7 @@ add_executable( template_20sim main.cpp
                 )
 
 # Add the constant TIME_STEP_SIZE to definitions
-target_compile_definitions(main PRIVATE TIME_STEP_SIZE=${TIME_STEP_SIZE_VALUE})
+target_compile_definitions(template_20sim PRIVATE TIME_STEP_SIZE=${TIME_STEP_SIZE_VALUE})
 
 ament_target_dependencies(template_20sim PUBLIC rclcpp xrf2_msgs std_msgs)
 

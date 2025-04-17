@@ -12,13 +12,13 @@ RosXenoBridge::RosXenoBridge() : Node("RosXenoBridge")
   initialize();
 
   // Initialize subscribers, publishers, parameters etc. here...
-  RCLCPP_INFO(this->get_logger(), "Creating publisher for topic 'Xenomai_state'");
-  control_publisher_ = this->create_publisher<std_msgs::msg::Int32>("Xenomai_state", 1000);
+  RCLCPP_INFO(this->get_logger(), "Creating publisher for topic 'XenoState'");
+  control_publisher_ = this->create_publisher<std_msgs::msg::Int32>("XenoState", 1000);
   RCLCPP_INFO(this->get_logger(), "Creating publisher for topic 'Xeno2Ros'");
   data_publisher_ = this->create_publisher<xrf2_msgs::msg::Xeno2Ros>("Xeno2Ros", 1000);
 
-  RCLCPP_INFO(this->get_logger(), "Subscribing to topic 'Command'");
-  control_subscription_ = this->create_subscription<std_msgs::msg::Int32>("Command", 1, std::bind(&RosXenoBridge::controlCallback, this, _1));
+  RCLCPP_INFO(this->get_logger(), "Subscribing to topic 'XenoCmd'");
+  control_subscription_ = this->create_subscription<std_msgs::msg::Int32>("XenoCmd", 1, std::bind(&RosXenoBridge::controlCallback, this, _1));
   RCLCPP_INFO(this->get_logger(), "Subscribing to topic 'Ros2Xeno'");
   data_subscription_ = this->create_subscription<xrf2_msgs::msg::Ros2Xeno>("Ros2Xeno", 1, std::bind(&RosXenoBridge::dataCallback, this, _1));
 
@@ -47,18 +47,18 @@ void RosXenoBridge::initialize()
     error(1, errno, "fcntl(data_fd, F_SETFL, flags| O_NONBLOCK)");
 
   // Get control line file descriptor
-  control_fd = open("/dev/evl/xbuf/Control", O_RDWR);
-  if (control_fd < 0)
+  xenocmd_fd = open("/dev/evl/xbuf/XenoCmd", O_RDWR);
+  if (xenocmd_fd < 0)
     error(1, errno, "open('/dev/evl/xbuf/Control') : Check xbuf permissions, see xbuf_udev_rule/readme.txt");
 
   // Set file descriptor to non-block
-  flags = fcntl(control_fd, F_GETFL, 0);
-  ret = fcntl(control_fd, F_SETFL, flags| O_NONBLOCK);
+  flags = fcntl(xenocmd_fd, F_GETFL, 0);
+  ret = fcntl(xenocmd_fd, F_SETFL, flags| O_NONBLOCK);
   if (ret == -1)
-    error(1, errno, "fcntl(control_fd, F_SETFL, flags| O_NONBLOCK)");
+    error(1, errno, "fcntl(xenocmd_fd, F_SETFL, flags| O_NONBLOCK)");
 
   #if ROS_BRIDGE_DEBUG
-  printf("ros fd: %d, xeno fd : %d \n", control_fd, data_fd);
+  printf("ros fd: %d, xeno fd : %d \n", xenocmd_fd, data_fd);
   #endif
 
   // Empty out current data in the Ros-Xeno buffer
@@ -106,7 +106,7 @@ void RosXenoBridge::controlCallback(const std_msgs::msg::Int32::SharedPtr msg)
 {
   // Send received data to the Control buffer to Xenomai
   std_msgs::msg::Int32 msg_copy = *msg;
-  write(control_fd, &msg_copy, sizeof(msg_copy));
+  write(xenocmd_fd, &msg_copy, sizeof(msg_copy));
 
   #if ROS_BRIDGE_DEBUG
     RCLCPP_INFO(this->get_logger(), "Received command will be sent to Xenomai");
@@ -150,7 +150,7 @@ void RosXenoBridge::timerCallback()
   msg_count = 0;
   while (true)
   { 
-    ret = read(control_fd, &control_msg, sizeof(control_msg));
+    ret = read(xenocmd_fd, &control_msg, sizeof(control_msg));
     if (ret > 0) msg_count++;
     else break;
   }

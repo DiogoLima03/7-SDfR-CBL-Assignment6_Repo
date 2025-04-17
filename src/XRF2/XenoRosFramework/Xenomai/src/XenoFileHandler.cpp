@@ -14,6 +14,8 @@ XenoFileHandler::XenoFileHandler(bool add_timestamp, const char *_file_name, con
 {
     printf("%s: Constructing rampio: %s\n", __FUNCTION__, _file_name);
     // If add_timestamp is true add data and time to filename if not do not add it
+    this->create_directory(_file_name);
+
     if(add_timestamp)
     {
         struct timespec t_current_time;
@@ -45,7 +47,7 @@ XenoFileHandler::XenoFileHandler(bool add_timestamp, const char *_file_name, con
         
 
     mode = _mode;
-    evl_printf("Created a file with the name : %s , permissions : %d \n", file_name, mode);
+    evl_printf("Created a file with the name : %s , permissions : %o \n", file_name, mode);
 }
 
 /**
@@ -71,6 +73,8 @@ void XenoFileHandler::open()
     // Do not open file if file already open
     if(fd>0)
         return;
+
+    umask(000); // set umask options for current executable to not interfere with our set permissions
     // Open file
     file_fd = ::open(file_name, O_CREAT | O_APPEND | O_RDWR , mode);
     if(file_fd <= 0)
@@ -153,4 +157,22 @@ int XenoFileHandler::write(const void *tx_data, int data_size)
 
 
     return ret;
+}
+
+void XenoFileHandler::create_directory(const char *_file_name) {
+    std::filesystem::path file_path(_file_name);
+    std::filesystem::path dir_path = file_path.parent_path(); // Extract directory path
+
+    if (!dir_path.empty()) {
+        if (!std::filesystem::exists(dir_path)) {
+            try {
+                std::filesystem::create_directories(dir_path); // Create directories if they don't exist
+                printf("Created directory: %s \n", dir_path.c_str());
+            } catch (const std::filesystem::filesystem_error &e) {
+                printf("Error creating directory: %s \n", e.what());
+            }
+        } else {
+            printf("Directory already exists: %s \n" ,dir_path.c_str());
+        }
+    }
 }

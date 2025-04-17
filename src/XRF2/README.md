@@ -47,7 +47,6 @@ Two types of templates are provided:
 
 ## Additional Resources
 
-For more detailed information about the framework and its use, see the report:  
-[Raoudi2024MSc.pdf](https://essay.utwente.nl/104808/)  
+For more detailed information about the framework and its use, see the Software-Tools Manual, especially Appendix I. 
 
-Appendix F of the report provides details about implementing one of the templates.
+More information about the design and background of the framework are in [Raoudi2024MSc.pdf](https://essay.utwente.nl/104808/). Appendix F of the report provides details about implementing one of the templates.

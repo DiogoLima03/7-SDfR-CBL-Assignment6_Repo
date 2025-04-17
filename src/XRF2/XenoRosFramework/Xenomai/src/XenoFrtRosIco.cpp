@@ -22,10 +22,10 @@ XenoFrtRosIco::XenoFrtRosIco(uint _cycle_time_freq, uint write_decimator_freq, u
                     std::bind(&XenoFrtRosIco::error, this)),
     spi_controller((uint8_t)1, 12, (uint32_t)31 * MILLION), 
     ico_io(spi_controller),
-    command_com("Control", sizeof(std_msgs::msg::Int32), sizeof(std_msgs::msg::Int32) * 10),
+    command_com("XenoCmd", sizeof(std_msgs::msg::Int32), sizeof(std_msgs::msg::Int32) * 10),
     command_bridge(command_com, state_machine, _cycle_time_freq, write_decimator_freq),
     data_com("Ros-Xeno", sizeof(xrf2_msgs::msg::Ros2Xeno) * 1, sizeof(xrf2_msgs::msg::Xeno2Ros) * 1000),
-    data_bridge(data_com, _cycle_time_freq, write_decimator_freq, &ros_data , &xeno_data),
+    data_bridge(data_com, _cycle_time_freq, write_decimator_freq, &ros_msg , &xeno_msg),
     monitor(_cycle_time_freq, monitor_freq),
     logger(_log_file_handler, data_to_be_logged_pntr)
 {
@@ -44,7 +44,7 @@ XenoFrtRosIco::~XenoFrtRosIco()
  * 
  * This function performs the following tasks:
  * 1. Updates sample_data and sends actuate data to the FPGA via `ico_io`.
- * 2. Updates ros_data variable with current data and sent xeno_data to ROS2.
+ * 2. Updates ros_msg variable with current data and sent xeno_msg to ROS2.
  * 3. Send current state to ROS2 and check for received commands from ROS2.
  * 4. Updates the monitoring system via `monitor`.
  * 5. Executes current satte of the state machine.

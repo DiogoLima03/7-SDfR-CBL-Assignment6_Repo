@@ -1,0 +1,10 @@
+build/*
+install/*
+log/*
+src/xeno_thread/controller/*
+Template/controller/*
+.vscode
+temp/*
+XenoRosFramework/html/*
+XenoRosFramework/latex/*
+*.DS_Store

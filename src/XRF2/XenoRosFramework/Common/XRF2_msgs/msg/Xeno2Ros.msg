@@ -1,2 +1,2 @@
-float64 right_wheel_vel
-float64 left_wheel_vel
+float64 example_c
+float64 example_d

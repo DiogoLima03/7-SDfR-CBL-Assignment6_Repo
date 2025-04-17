@@ -47,7 +47,7 @@ XenoRosCommandBridge::~XenoRosCommandBridge()
  */
 int XenoRosCommandBridge::update()
 {
-    int ret = communicator.read(&ros_data, data_size);
+    int ret = communicator.read(&ros_command_msg, msg_size);
     if(ret > 0)
     {   
         // Can i begin sending data? To limit writing to after a succesfull read
@@ -55,11 +55,11 @@ int XenoRosCommandBridge::update()
 
         // Set "CONTROL_BRIDGE_DEBUG" to 1 in debug_settings.h to see the commando's received during run time
         #if CONTROL_BRIDGE_DEBUG
-        evl_printf("Received command from ROS %d\n", ros_data.data);
+        evl_printf("Received command from ROS %d\n", ros_command_msg.data);
         #endif
 
         // Based on the data received call the correct action
-        int action_command = ros_data.data;
+        int action_command = ros_command_msg.data;
         switch (action_command)
         {
         case INITIALISE_CMD:
@@ -92,11 +92,11 @@ int XenoRosCommandBridge::update()
 
     }
 
-    //If all requirements are met, write the data in xeno_data to the buffer 
+    //If all requirements are met, write the data in xeno_state_msg to the buffer 
     if(write_flag && (decimation_counter == 0))
     {
-        xeno_data.data = state_machine.getState();
-        communicator.write(&xeno_data, data_size);      
+        xeno_state_msg.data = state_machine.getState();
+        communicator.write(&xeno_state_msg, msg_size);      
     }
 
     if(decimation_counter == 0)

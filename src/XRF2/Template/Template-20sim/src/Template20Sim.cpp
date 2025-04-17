@@ -1,8 +1,9 @@
 #include "Template20Sim.hpp"
 
 Template20Sim::Template20Sim(uint write_decimator_freq, uint monitor_freq) :
-    XenoFrt20Sim(controller, write_decimator_freq, monitor_freq, file, &data_to_be_logged),
-    file(1,"/home/pi/workspace/template","bin")
+    XenoFrt20Sim(write_decimator_freq, monitor_freq, file, &data_to_be_logged),
+    file(1,"./xrf2_logging/TEMPLATE","bin"), // change template to your project name
+    controller()
 {
      printf("%s: Constructing rampio\n", __FUNCTION__);
     // Add variables to logger to be logged, has to be done before you can log data
@@ -13,7 +14,7 @@ Template20Sim::Template20Sim(uint write_decimator_freq, uint monitor_freq) :
     logger.addVariable("this_is_a_bool", boolean);
     
     // To infinite run the controller, uncomment line below
-    //controller.SetFinishTime(0.0);
+    controller.SetFinishTime(0.0);
 }
 
 Template20Sim::~Template20Sim()

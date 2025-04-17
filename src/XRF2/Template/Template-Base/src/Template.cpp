@@ -2,7 +2,7 @@
 
 Template::Template(uint cycle_time_freq, uint write_decimator_freq, uint monitor_freq) :
     XenoFrtRosIco(cycle_time_freq, write_decimator_freq, monitor_freq, file, &data_to_be_logged),
-    file(1,"/temp/template","bin")
+    file(1,"./xrf2_logging/TEMPLATE","bin") // change the TEMPLATE to your project name
 {
      printf("%s: Constructing rampio\n", __FUNCTION__);
     // Add variables to logger to be logged, has to be done before you can log data

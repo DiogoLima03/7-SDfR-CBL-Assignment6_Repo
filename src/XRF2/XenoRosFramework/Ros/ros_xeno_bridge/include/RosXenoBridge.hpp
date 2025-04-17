@@ -32,7 +32,7 @@ using std::placeholders::_1;
 class RosXenoBridge : public rclcpp::Node {
 public:
     RosXenoBridge();
-    int data_fd, control_fd;
+    int data_fd, xenocmd_fd;
 
 private:
     //

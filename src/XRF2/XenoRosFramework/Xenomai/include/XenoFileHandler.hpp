@@ -8,6 +8,7 @@
 #include <error.h>
 #include <time.h> 
 #include <sys/stat.h>
+#include <filesystem>
 
 #include "ICommunication.h"
 #include "debug_settings.h"
@@ -28,7 +29,7 @@
 class XenoFileHandler : public ICommunication
 {
 public:
-    XenoFileHandler(bool add_timestamp, const char *name, const char *_file_type, mode_t mode = 00666);
+    XenoFileHandler(bool add_timestamp, const char *name, const char *_file_type, mode_t mode = 0666);
     ~XenoFileHandler();
     void open() override;
     void close() override;
@@ -40,6 +41,9 @@ private:
     char *proxy_name;      ///< The proxy name for file interaction.
     mode_t mode;           ///< The file access mode (permissions).
     int file_fd;           ///< File descriptor for the opened file.
+
+    void create_directory(const char *_file_name);
+
 };
 
 #endif // XENOFRTFILEHANDLER_HPP

@@ -35,7 +35,7 @@
 class XenoRosDataBridge
 {
 public:
-    XenoRosDataBridge(ICommunication& _communicator, uint _cycle_time_freq, uint _write_decimator_freq, xrf2_msgs::msg::Ros2Xeno* _ros_data_ptr, xrf2_msgs::msg::Xeno2Ros* _xeno_data_ptr);
+    XenoRosDataBridge(ICommunication& _communicator, uint _cycle_time_freq, uint _write_decimator_freq, xrf2_msgs::msg::Ros2Xeno* _ros_msg_ptr, xrf2_msgs::msg::Xeno2Ros* _xeno_data_ptr);
     ~XenoRosDataBridge();
 
     // Check if any command has been received and read and execute them  
@@ -52,9 +52,9 @@ private:
 
     bool write_flag;                                            ///< Flag indicating whether data should be written.
 
-    xrf2_msgs::msg::Ros2Xeno* ros_data_ptr;                   ///< Pointer to the ROS data (Ros2Xeno message).
-    xrf2_msgs::msg::Xeno2Ros* xeno_data_ptr;                  ///< Pointer to the Xenomai data (Xeno2Ros message).
-    int ros_data_size = sizeof(xrf2_msgs::msg::Ros2Xeno);     ///< Size of the ROS message Ros2Xeno.
-    int xeno_data_size = sizeof(xrf2_msgs::msg::Xeno2Ros);    ///< Size of the ROS message Xeno2Ros.
+    xrf2_msgs::msg::Ros2Xeno* ros_msg_ptr;                   ///< Pointer to the ROS data (Ros2Xeno message).
+    xrf2_msgs::msg::Xeno2Ros* xeno_msg_ptr;                  ///< Pointer to the Xenomai data (Xeno2Ros message).
+    int ros_msg_size = sizeof(xrf2_msgs::msg::Ros2Xeno);     ///< Size of the ROS message Ros2Xeno.
+    int xeno_msg_size = sizeof(xrf2_msgs::msg::Xeno2Ros);    ///< Size of the ROS message Xeno2Ros.
 };
 #endif // XENOROSDATABRIDGE_HPP

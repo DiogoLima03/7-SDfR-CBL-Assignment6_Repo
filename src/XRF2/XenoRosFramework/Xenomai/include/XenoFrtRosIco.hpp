@@ -128,8 +128,8 @@ protected:
     IcoIo::IcoWrite actuate_data;               ///< Data to be written to the FPGA (PWM + digital output data).
     IcoIo::IcoRead sample_data;                 ///< Input data collected from the FPGA (encoder + digital input data).
 
-    xrf2_msgs::msg::Ros2Xeno ros_data;        ///< Data received from ROS implementation.
-    xrf2_msgs::msg::Xeno2Ros xeno_data;       ///< Data sent from this Xenomai thread to ROS.
+    xrf2_msgs::msg::Ros2Xeno ros_msg;        ///< Data received from ROS implementation.
+    xrf2_msgs::msg::Xeno2Ros xeno_msg;       ///< Data sent from this Xenomai thread to ROS.
 
     #if GET_TIMINGS
     struct timespec t1;         ///< Start time of FPGA communication.

@@ -66,9 +66,9 @@ private:
 
     bool write_flag;                                 ///< Flag indicating whether to write data.
 
-    std_msgs::msg::Int32 ros_data;                   ///< Data received from ROS implementation.
-    std_msgs::msg::Int32 xeno_data;                  ///< Data from this Xenomai thread.
-    int data_size = sizeof(std_msgs::msg::Int32);    ///< Size of the data.
+    std_msgs::msg::Int32 ros_command_msg;                   ///< Data received from ROS implementation.
+    std_msgs::msg::Int32 xeno_state_msg;                  ///< Data from this Xenomai thread.
+    int msg_size = sizeof(std_msgs::msg::Int32);    ///< Size of the data.
 };
 
 #endif // XENOROSCOMMANDBRIDGE_HPP
