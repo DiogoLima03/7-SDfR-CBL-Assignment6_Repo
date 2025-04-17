@@ -23,12 +23,6 @@ def generate_launch_description():
             name="image_to_pose"
         )
     
-    showimage = Node(
-            package="image_tools",
-            executable="showimage",
-            name="showimage"
-        )
-    
     cam2image_relbot_path = os.path.join(
         get_package_share_directory('launch_relbot'),
         'launch',
@@ -41,6 +35,5 @@ def generate_launch_description():
     return LaunchDescription([
         relbot_sequence_controller,
         image_to_pose,
-        showimage,
         cam2image_launch
     ])

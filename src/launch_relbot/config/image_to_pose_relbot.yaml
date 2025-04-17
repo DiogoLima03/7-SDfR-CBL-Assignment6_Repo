@@ -1,0 +1,3 @@
+/image_to_pose:
+  /ros__parameters:
+    show_camera: false

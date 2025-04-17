@@ -1,0 +1,6 @@
+/relbot_sequence_controller:
+  ros__parameters:
+    is_motors_fliped: true
+    max_vel: 3
+
+    

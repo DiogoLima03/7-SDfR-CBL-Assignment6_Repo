@@ -79,6 +79,8 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "*.ipp": "cpp"
+    },
+    "cmake.sourceDirectory": "/home/ubuntu/projects/7-SDfR-CBL-Assignment6_Repo/src/cam2image_vm2ros"
 }

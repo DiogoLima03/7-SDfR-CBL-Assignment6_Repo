@@ -84,7 +84,8 @@ void SteerRelbot::calculate_velocity(geometry_msgs::msg::Pose::SharedPtr pose)
     left_velocity =  xVelocity + (omega * widthRelbot / 2); // m/s
 
     // Convertes the velocity to the right signal for the I/O hardware
-    left_velocity = - left_velocity;
+    // maybe add a parameter for simulator and relbot launch file ...
+    //left_velocity = - left_velocity;
 }
 
 int main(int argc, char *argv[])
