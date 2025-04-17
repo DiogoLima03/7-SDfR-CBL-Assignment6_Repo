@@ -3,8 +3,8 @@
     width: 300
     height: 200
     remote_mode: false
-    show_camera: true
-    remote_timeout: 7
+    show_camera: false
+    frequency: 10.0
     history: "keep_last"
     durability: "volatile"
     reliability: "reliable"

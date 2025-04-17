@@ -57,14 +57,25 @@ To connect to the rasperipy with -X:
 
 # IN LINUX (Relbot):
 
-In one terminal run:
-1. `colcon build --packages-skip costum_messages   `
+In one terminal run the Xenomai:
+1. `colcon build --packages-select xrf2_msgs  `
+2. `source install/setup.bash   `
+1. `colcon build --packages-skip costum_messages   ` in the final report take out to "--packages-skip costum_messages"
 2. `source install/setup.bash   `
 3. `sudo ./build/demo/demo   `
 ALL IN ONE:
-1. `colcon build --packages-skip costum_messages && source install/setup.bash && sudo ./build/demo/demo`
+1. `colcon build --packages-select xrf2_msgs && source install/setup.bash && colcon build --packages-skip costum_messages && source install/setup.bash  &&  sudo ./build/demo/demo`
 
-In another terminal run:
+In another terminal run the brigde ROS2 to Xenomai:
+1. `source install/setup.bash   `
+2. `ros2 run ros_xeno_bridge RosXenoBridge   `
+ALL IN ONE:
+1. `source install/setup.bash && ros2 run ros_xeno_bridge RosXenoBridge`
+
+In anothe terminal check xenomai is initialised
+1. `ros2 topic pub --once /XenoCmd std_msgs/msg/Int32 "{data: 1}"   `
+
+In another terminal run the ROS2 nodes:
 1. `source install/setup.bash   `
 2. `ros2 launch launch_relbot relbot_launch.py   `
 ALL IN ONE:

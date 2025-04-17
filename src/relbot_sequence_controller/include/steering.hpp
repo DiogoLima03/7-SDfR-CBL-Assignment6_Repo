@@ -12,6 +12,12 @@
 // message type for pose
 # include "geometry_msgs/msg/pose.hpp"
 
+// message type for ros2xeno
+#include "xrf2_msgs/msg/ros2_xeno.hpp"
+
+// message type for xeno2ros
+#include "xrf2_msgs/msg/xeno2_ros.hpp"
+
 class SteerRelbot : public rclcpp::Node
 {
 public:
@@ -21,7 +27,10 @@ private:
     // Subscribers
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_subscription_;
 
-    // Publishers
+    // Publisher for the relbot
+    rclcpp::Publisher<xrf2_msgs::msg::Ros2Xeno>::SharedPtr velocities_relbot_;
+
+    // publishers for relbot simulation
     rclcpp::Publisher<example_interfaces::msg::Float64>::SharedPtr left_wheel_publish_;
     rclcpp::Publisher<example_interfaces::msg::Float64>::SharedPtr right_wheel_publish_;
 
