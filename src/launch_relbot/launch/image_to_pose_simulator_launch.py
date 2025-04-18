@@ -11,22 +11,35 @@ from launch.actions import IncludeLaunchDescription
 
 def generate_launch_description():
     
+    config_image_to_pose = os.path.join(
+        get_package_share_directory('launch_relbot'),
+        'config',
+        'image_to_pose_simulator.yaml')
+    
     image_to_pose = Node(
             package="image_to_pose",
             executable="image_to_pose",
-            name="image_to_pose"
+            name="image_to_pose",
+            parameters=[config_image_to_pose],
         )
     
-    cam2image_windows_path = os.path.join(
+    config_cam2image = os.path.join(
         get_package_share_directory('launch_relbot'),
-        'launch',
-        'cam2image_windows_launch.py'
-    )
-    cam2image_launch =  IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(cam2image_windows_path)
+        'config',
+        'cam2image_windows_server.yaml')
+    
+    cam2image_vm2ros = Node(
+            package='cam2image_vm2ros',
+            executable='cam2image',
+            name='cam2image',
+            parameters=[config_cam2image],
+            output='screen',
         )
     
     return LaunchDescription([
         image_to_pose,
-        cam2image_launch
+        cam2image_vm2ros
     ])
+    
+    
+    

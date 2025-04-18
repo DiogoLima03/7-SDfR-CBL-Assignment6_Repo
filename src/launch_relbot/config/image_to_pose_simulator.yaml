@@ -1,4 +1,4 @@
 ---
 /image_to_pose:
   ros__parameters:
-    is_relbot: true
+    is_relbot: false

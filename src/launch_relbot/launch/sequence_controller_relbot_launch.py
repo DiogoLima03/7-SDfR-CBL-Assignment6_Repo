@@ -41,7 +41,7 @@ def generate_launch_description():
     config_cam2image = os.path.join(
         get_package_share_directory('launch_relbot'),
         'config',
-        'cam2image_windows_server.yaml')
+        'cam2image_relbot.yaml')
     
     cam2image_vm2ros = Node(
             package='cam2image_vm2ros',

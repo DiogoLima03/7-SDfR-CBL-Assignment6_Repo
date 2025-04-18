@@ -4,7 +4,7 @@
     height: 200
     remote_mode: false
     show_camera: false
-    frequency: 10.0
+    frequency: 30.0
     history: "keep_last"
     durability: "volatile"
     reliability: "reliable"

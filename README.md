@@ -10,9 +10,9 @@ ALL IN ONE:
 ## IN WSL (LINUX):
 1. `colcon build --packages-select costum_messages cam2image_vm2ros image_to_pose launch_relbot`
 2. `source install/setup.bash  `
-3. `ros2 launch launch_relbot image_to_pose_launch.py   `
+3. `ros2 launch launch_relbot image_to_pose_simulator_launch.py   `
 ALL IN ONE:
-1. `colcon build --packages-select costum_messages cam2image_vm2ros image_to_pose launch_relbot  && source install/setup.bash && ros2 launch launch_relbot image_to_pose_launch.py   `
+1. `colcon build --packages-select costum_messages cam2image_vm2ros image_to_pose launch_relbot  && source install/setup.bash && ros2 launch launch_relbot image_to_pose_simulator_launch.py   `
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 Assignment 6.3 (sequence controller)
@@ -43,14 +43,16 @@ To connect to the rasperipy with -X:
 
 # IN LINUX (Relbot):
 
-1. `colcon build --packages-skip ros_xeno_bridge   `
+1. `colcon build --packages-select xrf2_msgs costum_messages `
 2. `source install/setup.bash  `
-3. `ros2 launch launch_relbot sequence_controller_relbot   `
+3. `colcon build --packages-select cam2image_vm2ros image_to_pose relbot_sequence_controller relbot_simulator relbot2turtlesim launch_relbot    `
+4. `source install/setup.bash  `
+5. `ros2 launch launch_relbot sequence_controller_relbot_launch.py   `
 ALL IN ONE:
-1. `colcon build --packages-skip XRF2 RELbot-loopC costum_messages && source install/setup.bash && ros2 launch launch_relbot sequence_controller_relbot.py    `
+1. `colcon build --packages-select xrf2_msgs costum_messages &&  source install/setup.bash && colcon build --packages-select cam2image_vm2ros image_to_pose relbot_sequence_controller relbot_simulator relbot2turtlesim launch_relbot &&  source install/setup.bash && ros2 launch launch_relbot sequence_controller_relbot_launch.py    `
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-Assignment 6.4.??? (running the relbot)
+Assignment 6.4. (running the relbot)
 
 ## IN WINDOWS CMD:
 
@@ -60,13 +62,13 @@ To connect to the rasperipy with -X:
 # IN LINUX (Relbot):
 
 In one terminal run the Xenomai:
-1. `colcon build --packages-select xrf2_msgs  `
+1. `colcon build --packages-select xrf2_msgs costum_messages `
 2. `source install/setup.bash   `
-1. `colcon build --packages-skip costum_messages   ` in the final report take out to "--packages-skip costum_messages"
+1. `colcon build --packages-skip xrf2_msgs costum_messages relbot_simulator relbot2turtlesim   ` 
 2. `source install/setup.bash   `
 3. `sudo ./build/demo/demo   `
 ALL IN ONE:
-1. `colcon build --packages-select xrf2_msgs && source install/setup.bash && colcon build --packages-skip costum_messages && source install/setup.bash  &&  sudo ./build/demo/demo`
+1. `colcon build --packages-select xrf2_msgs costum_messages && source install/setup.bash && colcon build --packages-skip xrf2_msgs costum_messages relbot_simulator relbot2turtlesim && source install/setup.bash  &&  sudo ./build/demo/demo`
 
 In another terminal run the brigde ROS2 to Xenomai:
 1. `source install/setup.bash   `
